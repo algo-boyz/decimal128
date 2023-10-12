@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/woodsbury/decimal128"
+	"github.com/algo-boyz/decimal128"
 )
 
 func ExampleCompare() {
