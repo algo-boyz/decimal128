@@ -6,6 +6,36 @@ import (
 	"testing"
 )
 
+func TestSum(t *testing.T) {
+	vals := make([]Decimal, 10)
+	var i = int64(0)
+
+	for key := range vals {
+		vals[key] = New(i, 0)
+		i++
+	}
+
+	sum := Sum(vals[0], vals[1:]...)
+	if !sum.Equal(New(45, 0)) {
+		t.Errorf("Failed to calculate sum, expected %s got %s", New(45, 0), sum)
+	}
+}
+
+func TestAvg(t *testing.T) {
+	vals := make([]Decimal, 10)
+	var i = int64(0)
+
+	for key := range vals {
+		vals[key] = New(i, 0)
+		i++
+	}
+
+	avg := Avg(vals[0], vals[1:]...)
+	if !avg.Equal(FromFloat64(4.5)) {
+		t.Errorf("Failed to calculate average, expected %s got %s", FromFloat64(4.5).String(), avg.String())
+	}
+}
+
 func TestDecimalAdd(t *testing.T) {
 	t.Parallel()
 

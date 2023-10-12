@@ -1,6 +1,25 @@
 package decimal128
 
-import "math/bits"
+import (
+	"math/bits"
+)
+
+// Sum returns the combined total of the provided first and rest Decimals
+func Sum(first Decimal, rest ...Decimal) Decimal {
+	total := first
+	for _, item := range rest {
+		total = total.Add(item)
+	}
+
+	return total
+}
+
+// Avg returns the average value of the provided first and rest Decimals
+func Avg(first Decimal, rest ...Decimal) Decimal {
+	count := New(int64(len(rest)+1), 0)
+	sum := Sum(first, rest...)
+	return sum.Quo(count)
+}
 
 // Add adds d and o, rounded using the [DefaultRoundingMode], and returns the
 // result.

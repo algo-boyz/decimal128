@@ -10,6 +10,12 @@ const (
 	maxDigits           = 35
 )
 
+var (
+	Zero = New(0, 1)
+	One  = New(1, 1)
+	Two  = New(2, 1)
+)
+
 // Decimal represents a 128-bit decimal floating point value. The zero value
 // for Decimal is the number +0.0.
 type Decimal struct {
@@ -202,6 +208,24 @@ func (d Decimal) Sign() int {
 	}
 
 	return 1
+}
+
+// IsPositive return
+//
+//	true if d > 0
+//	false if d == 0
+//	false if d < 0
+func (d Decimal) IsPositive() bool {
+	return d.Sign() == 1
+}
+
+// IsNegative return
+//
+//	true if d < 0
+//	false if d == 0
+//	false if d > 0
+func (d Decimal) IsNegative() bool {
+	return d.Sign() == -1
 }
 
 // Signbit reports whether d is negative or negative zero.
