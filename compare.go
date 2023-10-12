@@ -473,6 +473,28 @@ func (d Decimal) Cmp(o Decimal) CmpResult {
 	return CmpResult(sres)
 }
 
+// GreaterThan (GT) returns true when d is greater than d2.
+func (d Decimal) GreaterThan(d2 Decimal) bool {
+	return d.Cmp(d2) == 1
+}
+
+// GreaterThanOrEqual (GTE) returns true when d is greater than or equal to d2.
+func (d Decimal) GreaterThanOrEqual(d2 Decimal) bool {
+	cmp := d.Cmp(d2)
+	return cmp == 1 || cmp == 0
+}
+
+// LessThan (LT) returns true when d is less than d2.
+func (d Decimal) LessThan(d2 Decimal) bool {
+	return d.Cmp(d2) == -1
+}
+
+// LessThanOrEqual (LTE) returns true when d is less than or equal to d2.
+func (d Decimal) LessThanOrEqual(d2 Decimal) bool {
+	cmp := d.Cmp(d2)
+	return cmp == -1 || cmp == 0
+}
+
 // CmpAbs compares the absolute value of two Decimals and returns a CmpResult
 // representing whether the two values were equal, the left-hand side was
 // greater than the right-hand side, or the left-hand side was less than the
