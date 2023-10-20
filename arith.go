@@ -1,8 +1,23 @@
 package decimal128
 
 import (
+	"math/big"
 	"math/bits"
 )
+
+// DotUnitary is
+//
+//	for i, v := range x {
+//		sum += y[i] * v
+//	}
+//	return sum
+func Dot(x, y []Decimal) (sum Decimal) {
+	for i, v := range x {
+		sum = sum.Add(y[i].Mul(v))
+	}
+
+	return sum
+}
 
 // Sum returns the combined total of the provided first and rest Decimals
 func Sum(first Decimal, rest ...Decimal) Decimal {
@@ -19,6 +34,14 @@ func Avg(first Decimal, rest ...Decimal) Decimal {
 	count := New(int64(len(rest)+1), 0)
 	sum := Sum(first, rest...)
 	return sum.Quo(count)
+}
+
+// Abs returns the absolute value of the decimal.
+func (d Decimal) Abs() Decimal {
+	if d.IsPositive() {
+		return d
+	}
+	return FromInt(new(big.Int).Abs(d.Int(nil)))
 }
 
 // Add adds d and o, rounded using the [DefaultRoundingMode], and returns the
