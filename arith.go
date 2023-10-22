@@ -19,23 +19,6 @@ func Dot(x, y []Decimal) (sum Decimal) {
 	return sum
 }
 
-// Sum returns the combined total of the provided first and rest Decimals
-func Sum(first Decimal, rest ...Decimal) Decimal {
-	total := first
-	for _, item := range rest {
-		total = total.Add(item)
-	}
-
-	return total
-}
-
-// Avg returns the average value of the provided first and rest Decimals
-func Avg(first Decimal, rest ...Decimal) Decimal {
-	count := New(int64(len(rest)+1), 0)
-	sum := Sum(first, rest...)
-	return sum.Quo(count)
-}
-
 // Abs returns the absolute value of the decimal.
 func (d Decimal) Abs() Decimal {
 	if d.IsPositive() {

@@ -1,6 +1,11 @@
 // Package decimal128 provides a 128-bit decimal floating point type.
 package decimal128
 
+import (
+	"math"
+	"strconv"
+)
+
 const (
 	exponentBias        = 6176
 	maxBiasedExponent   = 12287
@@ -11,10 +16,13 @@ const (
 )
 
 var (
-	Zero = New(0, 1)
-	One  = New(1, 1)
-	Two  = New(2, 1)
+	Zero    = FromInt32(0)
+	One     = FromInt32(1)
+	Two     = FromInt32(2)
+	Hundred = FromInt32(100)
 )
+
+const DefaultPow = 1e8
 
 // Decimal represents a 128-bit decimal floating point value. The zero value
 // for Decimal is the number +0.0.
@@ -254,4 +262,33 @@ func (d Decimal) isInf() bool {
 
 func (d Decimal) isSpecial() bool {
 	return d.hi&0x7800_0000_0000_0000 == 0x7800_0000_0000_0000
+}
+
+func (d Decimal) Percentage() string {
+	if d.Equal(Zero) {
+		return "0"
+	}
+	if d.isInf() && d.IsPositive() {
+		return "inf%"
+	}
+	if d.isInf() && d.IsNegative() {
+		return "-inf%"
+	}
+	return strconv.FormatFloat(d.Float64()/DefaultPow*100, 'f', -1, 64) + "%"
+}
+
+func (d Decimal) FormatPercentage(prec int) string {
+	if d.Equal(Zero) {
+		return "0"
+	}
+	if d.isInf() && d.IsPositive() {
+		return "inf%"
+	}
+	if d.isInf() && d.IsNegative() {
+		return "-inf%"
+	}
+	pow := math.Pow10(prec)
+	result := strconv.FormatFloat(
+		math.Trunc(d.Float64()/DefaultPow*pow*100.)/pow, 'f', prec, 64)
+	return result + "%"
 }
